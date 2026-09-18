@@ -482,7 +482,7 @@ def get_response(user_input):
         ]):
             return format_answer(
                 "Common Python data types include int, float, str, bool, list, tuple, set and dict.",
-                "Common Python data types include:\n\n• int – whole numbers\n• float – decimal numbers\n• str – text\n• bool – True or False\n• list – ordered, changeable collection\n• tuple – ordered, unchangeable collection\n• set – unordered collection of unique items\n• dict – key-value pairs",
+                "Common Python data types include:\n\n- int – whole numbers\n- float – decimal numbers\n- str – text\n- bool – True or False\n- list – ordered, changeable collection\n- tuple – ordered, unchangeable collection\n- set – unordered collection of unique items\n- dict – key-value pairs",
                 "Python has common data types such as int for whole numbers, float for decimals, str for text, bool for True or False, list, tuple, set and dict.",
                 "Python provides built-in data types for storing different kinds of values. Common examples are int for whole numbers, float for decimal numbers, str for text, bool for True or False, list for ordered changeable collections, tuple for ordered unchangeable collections, set for unique items and dict for key-value pairs."
             )

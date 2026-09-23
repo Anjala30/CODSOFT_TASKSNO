@@ -10,7 +10,7 @@ st.set_page_config(
     page_title="Tic-Tac-Toe AI | CodSoft Task 2",
     page_icon="🎮",
     layout="centered",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",
 )
 
 
@@ -276,15 +276,551 @@ div[data-testid="stExpander"] * {
 
 /* ---------- MOBILE ---------- */
 @media (max-width: 700px) {
+    .block-container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        padding-top: 1rem !important;
+    }
+
     .hero h1 {
         font-size: 2.1rem;
     }
 
-    div[data-testid="stButton"] > button {
-        min-height: 84px !important;
-        font-size: 2.2rem !important;
+    /* ---------- MOBILE RESPONSIVE LAYOUT ---------- */
+    /*
+       Streamlit can apply a large minimum width to columns on small screens.
+       The rules below explicitly keep the scoreboard and game board inside
+       the phone viewport. No game logic is changed.
+    */
+
+    /* Keep the main content inside the phone viewport */
+    .block-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        padding-top: 0.9rem !important;
+        padding-bottom: 1.5rem !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Compact but readable hero */
+    .hero {
+        padding: 22px 15px 20px !important;
+        border-radius: 22px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .hero h1 {
+        font-size: 1.85rem !important;
+        line-height: 1.15 !important;
+    }
+
+    .hero p {
+        font-size: 0.9rem !important;
+        line-height: 1.45 !important;
+    }
+
+    /* Compact feature pills */
+    .pill-row {
+        gap: 7px !important;
+        margin: 4px 0 14px !important;
+    }
+
+    .pill {
+        padding: 7px 9px !important;
+        font-size: 0.70rem !important;
+    }
+
+    /*
+       IMPORTANT:
+       Keep every 3-column Streamlit block on one row.
+       This prevents Streamlit's mobile stacking behaviour.
+    */
+    div[data-testid="stHorizontalBlock"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+
+    /* Force each column to share the available width equally */
+    div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"],
+    div[data-testid="stHorizontalBlock"] > div[data-testid="column"] {
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+
+    /* Score cards: compact 3-across layout */
+    .score-card {
+        padding: 10px 4px !important;
+        border-radius: 15px !important;
+        min-height: 76px !important;
+        box-sizing: border-box !important;
+    }
+
+    .score-label {
+        font-size: 0.67rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .score-value {
+        font-size: 1.35rem !important;
+        margin-top: 3px !important;
+    }
+
+    /* Status message */
+    .status-card {
+        padding: 12px 10px !important;
+        margin: 12px 0 12px !important;
+        border-radius: 15px !important;
+        font-size: 0.88rem !important;
+        line-height: 1.35 !important;
+    }
+
+    /* ---------- MOBILE GAME BOARD ---------- */
+    .board-frame {
+        padding: 8px !important;
+        border-radius: 20px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    /* Each of the 3 board rows stays exactly 3 columns wide */
+    .board-frame ~ div[data-testid="stHorizontalBlock"] {
+        width: 100% !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 7px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) > div[data-testid="stColumn"],
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) > div[data-testid="column"] {
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"] > button {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
+        font-size: clamp(1.7rem, 9vw, 2.35rem) !important;
+        line-height: 1 !important;
+        border-radius: 14px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Prevent text/content from creating horizontal overflow */
+    .info-card {
+        padding: 16px !important;
+        border-radius: 18px !important;
+        margin-top: 14px !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .info-card h3 {
+        font-size: 1.35rem !important;
+        line-height: 1.25 !important;
+    }
+
+    .info-card p,
+    .info-card li {
+        font-size: 0.88rem !important;
+        line-height: 1.5 !important;
+    }
+
+    .footer {
+        font-size: 0.70rem !important;
+        padding: 10px 4px !important;
+    }
+
+    /* ---------- FINAL MOBILE SIDEBAR ---------- */
+    /* Keep the sidebar compact. Streamlit's mobile sidebar remains an overlay when opened. */
+    section[data-testid="stSidebar"] {
+        width: min(300px, 78vw) !important;
+        min-width: min(300px, 78vw) !important;
+        max-width: min(300px, 78vw) !important;
+    }
+
+    section[data-testid="stSidebar"] > div {
+        width: min(300px, 78vw) !important;
+        min-width: min(300px, 78vw) !important;
+        max-width: min(300px, 78vw) !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton > button {
+        min-height: 50px !important;
+        height: 50px !important;
+        padding: 8px 10px !important;
+        font-size: 0.92rem !important;
+        border-radius: 13px !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-brand {
+        padding: 13px !important;
+        margin-bottom: 12px !important;
+    }
+
+    section[data-testid="stSidebar"] .method-card {
+        padding: 13px !important;
+        margin-top: 12px !important;
+    }
+
+    /* ---------- FINAL MOBILE BOARD ---------- */
+    /* Keep the 3 x 3 board inside the phone viewport with equal square cells. */
+    .board-frame {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 6px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 7px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) > div[data-testid="stColumn"],
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) > div[data-testid="column"] {
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"],
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"] > button {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"] > button {
+        font-size: clamp(1.55rem, 8vw, 2.2rem) !important;
+        line-height: 1 !important;
+        border-radius: 14px !important;
+    }
+
+
+
+/* ============================================================
+   FINAL MOBILE POLISH — PREMIUM GAME LAYOUT
+   Desktop layout and game logic remain unchanged.
+   ============================================================ */
+@media (max-width: 700px) {
+
+    html, body,
+    [data-testid="stAppViewContainer"],
+    .stApp {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+
+    .block-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0.75rem 10px 1.25rem !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    /* ---------- FULL-SCREEN MOBILE SIDEBAR ---------- */
+    /* When opened, settings become a clean mobile drawer instead of
+       leaving a strip of the game visible behind it. */
+    section[data-testid="stSidebar"] {
+        width: 100vw !important;
+        min-width: 100vw !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        z-index: 999999 !important;
+    }
+
+    section[data-testid="stSidebar"] > div {
+        width: 100vw !important;
+        min-width: 100vw !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-brand {
+        margin-top: 8px !important;
+        padding: 18px 16px !important;
+        border-radius: 20px !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-brand-title {
+        font-size: 1.25rem !important;
+    }
+
+    section[data-testid="stSidebar"] .sidebar-brand-subtitle {
+        font-size: 0.88rem !important;
+        line-height: 1.45 !important;
+    }
+
+    section[data-testid="stSidebar"] .stRadio {
+        margin-top: 4px !important;
+    }
+
+    section[data-testid="stSidebar"] .stButton > button {
+        width: 100% !important;
+        min-height: 52px !important;
+        height: 52px !important;
+        border-radius: 15px !important;
+        font-size: 0.98rem !important;
+    }
+
+    section[data-testid="stSidebar"] .method-card {
+        padding: 18px !important;
+        border-radius: 20px !important;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 22px 14px 19px !important;
+        margin: 0 0 14px !important;
+        border-radius: 22px !important;
+    }
+
+    .hero h1 {
+        font-size: clamp(1.65rem, 7vw, 2rem) !important;
+        line-height: 1.15 !important;
+    }
+
+    .hero p {
+        font-size: 0.88rem !important;
+        line-height: 1.45 !important;
+        margin-top: 9px !important;
+    }
+
+    /* ---------- FEATURE BADGES ---------- */
+    .pill-row {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 7px !important;
+        margin: 0 0 14px !important;
+    }
+
+    .pill {
+        padding: 7px 9px !important;
+        font-size: 0.69rem !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+    }
+
+    /* ---------- SCOREBOARD ---------- */
+    div[data-testid="stHorizontalBlock"]:has(.score-card) {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 7px !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(.score-card) > div[data-testid="stColumn"],
+    div[data-testid="stHorizontalBlock"]:has(.score-card) > div[data-testid="column"] {
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
+    }
+
+    .score-card {
+        width: 100% !important;
+        min-height: 78px !important;
+        padding: 10px 3px !important;
+        border-radius: 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    .score-label {
+        font-size: 0.64rem !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+    }
+
+    .score-value {
+        font-size: 1.4rem !important;
+        line-height: 1.1 !important;
+    }
+
+    /* ---------- STATUS ---------- */
+    .status-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 12px 0 12px !important;
+        padding: 12px 9px !important;
+        border-radius: 16px !important;
+        font-size: 0.88rem !important;
+        line-height: 1.35 !important;
+    }
+
+    /* ---------- GAME BOARD ---------- */
+    .board-frame {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 7px !important;
+        margin: 0 !important;
+        border-radius: 21px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    /* Every board row = exactly three equal cells. */
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        gap: 7px !important;
+        margin: 0 0 7px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) > div[data-testid="stColumn"],
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) > div[data-testid="column"] {
+        flex: 1 1 0 !important;
+        width: 0 !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"],
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"] > button {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-testid="stHorizontalBlock"]:has(div[data-testid="stButton"]) div[data-testid="stButton"] > button {
+        border-radius: 15px !important;
+        font-size: clamp(1.55rem, 9vw, 2.25rem) !important;
+        line-height: 1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* ---------- INFORMATION ---------- */
+    .info-card {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-top: 15px !important;
+        padding: 17px 15px !important;
+        border-radius: 20px !important;
+        overflow: hidden !important;
+    }
+
+    .info-card h3 {
+        font-size: 1.25rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 9px !important;
+    }
+
+    .info-card p,
+    .info-card li {
+        font-size: 0.87rem !important;
+        line-height: 1.52 !important;
+        overflow-wrap: anywhere !important;
+        word-break: normal !important;
+    }
+
+    div[data-testid="stExpander"] {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-top: 10px !important;
+        border-radius: 17px !important;
+        overflow: hidden !important;
+    }
+
+    div[data-testid="stExpander"] summary,
+    div[data-testid="stExpander"] button {
+        font-size: 0.9rem !important;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .footer {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-top: 18px !important;
+        padding: 10px 5px !important;
+        font-size: 0.68rem !important;
+        line-height: 1.5 !important;
+        overflow-wrap: anywhere !important;
     }
 }
+
 </style>
 """,
     unsafe_allow_html=True,
